@@ -1,0 +1,78 @@
+// features/feed/presentation/feed_screen.dart
+import 'package:flutter/material.dart';
+import 'following_tab.dart';
+import 'explore_tab.dart';
+
+class FeedScreen extends StatefulWidget {
+  const FeedScreen({super.key});
+
+  @override
+  State<FeedScreen> createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends State<FeedScreen> {
+  bool _showFollowing = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Feeds'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_outline),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/profile');
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildToggleButton('Following', _showFollowing, () {
+                setState(() => _showFollowing = true);
+              }),
+              const SizedBox(width: 8),
+              _buildToggleButton('Explore', !_showFollowing, () {
+                setState(() => _showFollowing = false);
+              }),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: _showFollowing
+                ? const FollowingTab()
+                : const ExploreTab(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToggleButton(
+      String label, bool active, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: active ? Colors.orange : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.orange),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: active ? Colors.black : Colors.orange,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+}
