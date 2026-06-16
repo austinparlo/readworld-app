@@ -1,0 +1,94 @@
+// features/reader/presentation/reader_screen.dart
+import 'package:flutter/material.dart';
+import '../../../core/models/story_model.dart';
+import '../../../core/services/auth_service.dart';
+import '../../../core/services/translation_service.dart';
+import '../widgets/tts_controls.dart';
+import '../widgets/translate_button.dart';
+
+class ReaderScreen extends StatefulWidget {
+  final StoryModel story;
+  const ReaderScreen({super.key, required this.story});
+
+  @override
+  State<ReaderScreen> createState() => _ReaderScreenState();
+}
+
+class _ReaderScreenState extends State<ReaderScreen> {
+  String? _translatedText;
+  bool _showOriginal = true;
+  bool _loadingTranslation = false;
+
+  Future<void> _handleTranslate() async {
+    final user = AuthService.instance.currentUser;
+    if (user == null || !user.isPremium) {
+      // show premium paywall
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Premium feature'),
+          content: const Text(
+              'Translation is available for Premium users only.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Close'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/premium');
+              },
+              child: const Text('Upgrade'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    setState(() => _loadingTranslation = true);
+    final translated = await TranslationService.instance.translateStory(
+      widget.story.content,
+      targetLang: user.preferredLanguage ?? 'en',
+    );
+    setState(() {
+      _translatedText = translated;
+      _showOriginal = false;
+      _loadingTranslation = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textToShow =
+        _showOriginal || _translatedText == null ? widget.story.content : _translatedText!;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.story.title),
+        actions: [
+          TranslateButton(
+            isPremium: AuthService.instance.currentUser?.isPremium ?? false,
+            loading: _loadingTranslation,
+            showOriginal: _showOriginal,
+            onTranslate: _handleTranslate,
+            onToggleOriginal: () {
+              setState(() => _showOriginal = !_showOriginal);
+            },
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Text(
+            textToShow,
+            style: const TextStyle(fontSize: 16, height: 1.5),
+          ),
+        ),
+      ),
+      bottomNavigationBar: TtsControls(text: textToShow),
+    );
+  }
+}
