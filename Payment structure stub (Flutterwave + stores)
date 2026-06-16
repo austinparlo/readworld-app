@@ -1,0 +1,16 @@
+// core/services/payment_service.dart
+class PaymentService {
+  PaymentService._();
+  static final instance = PaymentService._();
+
+  Future<void> startPremiumSubscription() async {
+    // TODO:
+    // - If Android: Google Play Billing
+    // - If iOS: Apple IAP
+    // - Else / Africa: Flutterwave checkout
+  }
+
+  Future<void> startFlutterwaveCheckout() async {
+    // TODO: integrate Flutterwave SDK / webview
+  }
+}
