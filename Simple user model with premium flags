@@ -1,0 +1,22 @@
+// core/models/user_model.dart
+class UserModel {
+  final String id;
+  final String email;
+  final String username;
+  final bool isPremium;
+  final bool isPremiumPlus;
+  final bool isVerified;
+  final String? badgeColor; // 'blue', 'yellow', 'yellow_plus'
+  final String? preferredLanguage;
+
+  UserModel({
+    required this.id,
+    required this.email,
+    required this.username,
+    required this.isPremium,
+    required this.isPremiumPlus,
+    required this.isVerified,
+    this.badgeColor,
+    this.preferredLanguage,
+  });
+}
