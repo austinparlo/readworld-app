@@ -1,0 +1,65 @@
+// features/common/widgets/app_tab_bar.dart
+import 'package:flutter/material.dart';
+import '../../home/presentation/home_screen.dart';
+import '../../feed/presentation/feed_screen.dart';
+import '../../writer/presentation/writer_dashboard_screen.dart';
+import '../../settings/presentation/settings_screen.dart';
+
+class RootTabScaffold extends StatefulWidget {
+  const RootTabScaffold({super.key});
+
+  @override
+  State<RootTabScaffold> createState() => _RootTabScaffoldState();
+}
+
+class _RootTabScaffoldState extends State<RootTabScaffold> {
+  int _index = 0;
+
+  final _screens = const [
+    HomeScreen(),
+    FeedScreen(),
+    SizedBox(), // placeholder for + button
+    SettingsScreen(),
+  ];
+
+  void _onTabTapped(int i) {
+    if (i == 2) {
+      // plus button → writer create / become writer
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => const WriterDashboardScreen()),
+      );
+      return;
+    }
+    setState(() => _index = i);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _screens[_index],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _index,
+        onTap: _onTabTapped,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dynamic_feed_outlined),
+            label: 'Feeds',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle, size: 32),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_outlined),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
+}
