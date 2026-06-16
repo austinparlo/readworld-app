@@ -42,3 +42,63 @@ class AuthService {
     _currentUser = null;
   }
 }
+// features/auth/presentation/login_screen.dart
+import 'package:flutter/material.dart';
+import '../../../core/services/auth_service.dart';
+import '../../common/widgets/app_tab_bar.dart';
+
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
+  Future<void> _handleGoogle(BuildContext context) async {
+    final user = await AuthService.instance.signInWithGoogle();
+    if (user != null && context.mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const RootTabScaffold()),
+      );
+    }
+  }
+
+  Future<void> _handleApple(BuildContext context) async {
+    final user = await AuthService.instance.signInWithApple();
+    if (user != null && context.mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const RootTabScaffold()),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'ReadWorld',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: () => _handleGoogle(context),
+              icon: const Icon(Icons.g_mobiledata),
+              label: const Text('Continue with Google'),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: () => _handleApple(context),
+              icon: const Icon(Icons.apple),
+              label: const Text('Continue with Apple'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
