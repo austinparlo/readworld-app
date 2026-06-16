@@ -1,0 +1,66 @@
+// core/models/story_model.dart
+class StoryModel {
+  final String id;
+  final String writerId;
+  final String title;
+  final String content;
+  final String category;
+  final int views;
+  final int likes;
+  final int dislikes;
+  final double rating;
+  final String? fontTitle;
+  final String? fontBody;
+
+  StoryModel({
+    required this.id,
+    required this.writerId,
+    required this.title,
+    required this.content,
+    required this.category,
+    required this.views,
+    required this.likes,
+    required this.dislikes,
+    required this.rating,
+    this.fontTitle,
+    this.fontBody,
+  });
+}// features/home/data/story_repository.dart
+class StoryRepository {
+  StoryRepository._();
+  static final instance = StoryRepository._();
+
+  Future<List<StoryModel>> getTrendingStories() async {
+    // TODO: fetch from backend (Supabase/Firebase)
+    return [];
+  }
+
+  Future<List<StoryModel>> getFollowingStories(String userId) async {
+    // TODO: fetch stories from followed writers
+    return [];
+  }
+
+  Future<List<StoryModel>> getExploreStories() async {
+    // TODO: global explore feed
+    return [];
+  }
+}// features/home/data/story_repository.dart
+class StoryRepository {
+  StoryRepository._();
+  static final instance = StoryRepository._();
+
+  Future<List<StoryModel>> getTrendingStories() async {
+    // TODO: fetch from backend (Supabase/Firebase)
+    return [];
+  }
+
+  Future<List<StoryModel>> getFollowingStories(String userId) async {
+    // TODO: fetch stories from followed writers
+    return [];
+  }
+
+  Future<List<StoryModel>> getExploreStories() async {
+    // TODO: global explore feed
+    return [];
+  }
+}
