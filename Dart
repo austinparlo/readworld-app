@@ -1,0 +1,19 @@
+// app.dart
+import 'package:flutter/material.dart';
+import 'core/config/app_routes.dart';
+import 'core/config/app_theme.dart';
+
+class ReadWorldApp extends StatelessWidget {
+  const ReadWorldApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'ReadWorld',
+      theme: AppTheme.darkTheme,
+      initialRoute: AppRoutes.root,
+      onGenerateRoute: AppRoutes.onGenerateRoute,
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
