@@ -1,0 +1,15 @@
+// core/services/translation_service.dart
+class TranslationService {
+  TranslationService._();
+  static final instance = TranslationService._();
+
+  Future<String> translateStory(
+    String text, {
+    required String targetLang,
+  }) async {
+    // TODO: integrate real translation API (e.g. Microsoft / Google)
+    // For now, just return original text as placeholder.
+    await Future.delayed(const Duration(milliseconds: 500));
+    return text;
+  }
+}
